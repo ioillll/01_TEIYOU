@@ -1,77 +1,40 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial_1/model/weather_response.dart';
+import 'package:tutorial_1/select_prefecture_page.dart';
+import 'auth_gate.dart';
 
-// 1. エントリーポイントのmain関数
-void main() {
-  // 2. MyAppを呼び出す
+import 'firebase_options.dart';
+
+// 最初に実行される関数
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  
+  // runApp関数でMyAppクラスを実行
   runApp(const MyApp());
 }
 
-// MyAppのクラス
+// MyAppクラス (アプリ全体) StatelessWidgetを継承
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
+  // buildメソッド
   @override
   Widget build(BuildContext context) {
-    // 3. タイトルとテーマを設定する。画面の本体はMyHomePageで作る。
+    // MaterialAppクラスでMaterialAppを実行
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '今日の天気', // タイトル
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  // 5. カウンタが押された時のメソッド
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print("HelloWorld");
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // 4. MyHomePageの画面を構築する部分
-    return Scaffold(
-      // 画面上部のタイトル部分
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // 画面の中央に表示されるテキスト
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            // テキストの下に表示されるカウンタ値
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      // 右下の「+」ボタンに対応するフローティングアクションボタン
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ), // アプリ全体のテーマ
+      home: const AuthGate(),
+      // const MyHomePage(title: '今日の天気'), // アプリのホーム画面
     );
   }
 }
