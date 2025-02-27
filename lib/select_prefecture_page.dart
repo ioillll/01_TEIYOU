@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'prefectures.dart';
 import 'dart:convert'; // jsonDecodeを使うため
+import 'package:http/http.dart' as http; // httpリクエストを送信するため
+import './model/weather_model.dart'; // 天気予報のモデルクラス
 
 
 class SelectPrefecturePage extends StatefulWidget {
@@ -12,7 +14,7 @@ class SelectPrefecturePage extends StatefulWidget {
 
 class _SelectPrefecturePageState extends State<SelectPrefecturePage> {
 
-  late final List<Map<int, String>> _prefectures; // 都道府県名を格納するリスト
+  late final List<Map<String, String>> _prefectures; // 都道府県名を格納するリスト
 
   @override
   void initState() {
@@ -21,13 +23,13 @@ class _SelectPrefecturePageState extends State<SelectPrefecturePage> {
   }
 
    // 同期的に都道府県データを読み込む関数
-  List<Map<int, String>> _loadPrefectures() {
+  List<Map<String, String>> _loadPrefectures() {
     final Map<String, dynamic> json = jsonDecode(jsonStringPrefecture);
-    final List<Map<int, String>> prefectureList = [];
+    final List<Map<String, String>> prefectureList = [];
 
     json['prefecturesCode'].forEach((key, value) {
       // 都道府県コード(key)をintに変換してMapに追加
-      prefectureList.add({int.parse(key): value});
+      prefectureList.add({key: value});
     });
 
     return prefectureList;
@@ -45,13 +47,37 @@ class _SelectPrefecturePageState extends State<SelectPrefecturePage> {
 
           return ListTile(
             title: Text(_prefectures[index].values.first), // 都道府県名を表示
-            onTap: () {
-              // 選択された都道府県名を前の画面に返す
-              Navigator.of(context).pop(_prefectures[index].values.first);
+             onTap: () async{
+
+              // 選択された都道府県の天気予報を取得
+              final WeatherResponse weather = await fetchWeather(
+                  _prefectures[index].keys.first);
+              Navigator.of(context).pop(weather);
             },
           );
         },
       ),
     );
+  }
+
+  Future<WeatherResponse> fetchWeather(String areaCode) async {
+
+    final response = await http.get(
+      Uri.parse('https://www.jma.go.jp/bosai/forecast/data/overview_forecast/$areaCode.json'),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36',
+        'Accept': 'application/json',
+      },
+    );
+    final String responseBody = utf8.decode(response.bodyBytes);
+
+    print(responseBody);
+    print(response.headers);
+
+    if (response.statusCode == 200) {
+      return WeatherResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    } else {
+      throw Exception('天気予報の取得に失敗しました');
+    }
   }
 }

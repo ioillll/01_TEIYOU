@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'select_prefecture_page.dart';
-
+import './model/weather_model.dart';
 // 1. エントリーポイントのmain関数
 void main() {
   // 2. MyAppを呼び出す
@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String? _selectedPrefecture;
+  WeatherResponse? _weather;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: SingleChildScrollView(
-               child: Text('今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気今日の天気', style: TextStyle(fontSize: 20,),),
+              child: Text(_weather != null ? _weather!.text: "都道府県を選択してください", style: const TextStyle(fontSize: 20,),),
              ),
            ),
            // 都道府県の選択ボタn
@@ -73,12 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   // 戻り値がある場合、状態を更新
                   if (result != null) {
                     setState(() {
-                      _selectedPrefecture = result as String?;
+                      _weather = result as WeatherResponse?;
                     });
                   }
                 },
-                child: Text(_selectedPrefecture != null
-                    ? '選択済み: ${_selectedPrefecture}' // 選択された都道府県名を表示
+                child: Text(_weather != null
+                    ? '選択済み: ${_weather!.targetArea}' // 選択された都道府県名を表示
                     : '都道府県を選択'), // 選択されていない場合はデフォルトのテキストを表示
               ),
             ),
