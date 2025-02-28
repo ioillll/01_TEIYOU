@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorial_1/home_page.dart';
+
 import 'root_page.dart';
 
 
@@ -30,7 +31,7 @@ class AuthGate extends StatelessWidget {
           );
         }
 
-         return const RootPage();
+        return const RootPage();
       },
     );
   }

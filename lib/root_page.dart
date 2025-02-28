@@ -8,6 +8,7 @@ import 'profile_page.dart';
 /// 下記ページを切り替えるページ
 /// - ホーム（HomePage）
 /// - プロフィール（ProfilePage）
+
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
 

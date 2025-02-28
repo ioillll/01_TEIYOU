@@ -1,7 +1,9 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'edit_profile_page.dart';
 import 'model/user_model.dart';
 
@@ -13,10 +15,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  
+
   // TODO: 後で消す：ユーザーID
   final userDocId = '0N6dxccbr51zLE99slSs';
-
+  
   // // ユーザーデータのローカルデータ
   // final userData = UserModel(
   //   name: '山田太郎',
@@ -42,21 +44,64 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
   // futureBuilderにセットするfuture関数
-  Future<UserModel> fetchUserData() async {
+Future<UserModel> fetchUserData() async {
+  print("fetchUserData() is being called...");
+
+  try {
     final DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userDocId).get();
+
+    if (!userDoc.exists) {
+      print("Error: No user found for ID $userDocId");
+      throw Exception("User not found");
+    }
+
     final userDocData = userDoc.data() as Map<String, dynamic>;
+
+    // Debugging: Print the entire Firestore response
+    print("Firestore Response: $userDocData");
+
+    // Check what `iconUrl` actually is
+    print("Type of iconUrl: ${userDocData['iconUrl'].runtimeType}");
+
     final userData = UserModel(
-      name: userDocData['name'],
-      iconUrl: userDocData['iconUrl'],
-      selfIntroText: userDocData['selfIntroText'],
-      location: userDocData['location'],
-    );
+  name: userDocData['name'] ?? "No Name",
+  iconUrl: userDocData['iconUrl'] ?? "",
+  selfIntroText: userDocData['selfIntroText'] ?? "",
+  location: userDocData['location'] is Map
+      ? userDocData['location']['prefectureName'] ?? "Unknown"
+      : "Unknown",
+);
+
+
+    print("Profile Image URL: ${userData.iconUrl}");
 
     return userData;
+  } catch (e) {
+    print("Error fetching user data: $e");
+    throw e;
   }
+}
+
+
+  // Future<UserModel> fetchUserData() async {
+  //   print("fetchUserData() is being called...");
+    
+  //   final DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userDocId).get();
+  //   final userDocData = userDoc.data() as Map<String, dynamic>;
+  //   final userData = UserModel(
+  //     name: userDocData['name'],
+  //     iconUrl: userDocData['iconUrl'],
+  //     selfIntroText: userDocData['selfIntroText'],
+  //     location: userDocData['location'],
+  //   );
+  //   print("Profile Image URL: ${userData.iconUrl}");
+
+  //   return userData;
+  // }
+
   @override
   Widget build(BuildContext context) {
-     return FutureBuilder<UserModel>(
+    return FutureBuilder<UserModel>(
       future: fetchUserData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
@@ -85,7 +130,6 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(300),
                   child: Image.network(
@@ -97,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Text(userData.selfIntroText),
                 Text(userData.location),
-
+        
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

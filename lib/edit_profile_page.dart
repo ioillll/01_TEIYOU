@@ -13,11 +13,11 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-
+  
 
   // TODO: 後で消す：ユーザーID
   final userDocId = '0N6dxccbr51zLE99slSs';
-
+  
   @override
   Widget build(BuildContext context) {
     final userNameTextController = TextEditingController(text: widget.userData.name);
@@ -30,7 +30,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-
+          
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -128,6 +128,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       ),
     );
-
+    
   }
 }

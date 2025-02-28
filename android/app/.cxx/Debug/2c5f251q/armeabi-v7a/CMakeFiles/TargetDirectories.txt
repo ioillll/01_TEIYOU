@@ -1,2 +1,0 @@
-D:/College/vacation/helloworld/android/app/.cxx/Debug/2c5f251q/armeabi-v7a/CMakeFiles/edit_cache.dir
-D:/College/vacation/helloworld/android/app/.cxx/Debug/2c5f251q/armeabi-v7a/CMakeFiles/rebuild_cache.dir
