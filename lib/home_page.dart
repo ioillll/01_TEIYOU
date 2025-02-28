@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               weatherData = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return SelectPrefecturePage(); // 遷移先の画面widgetを指定
+                    return const SelectPrefecturePage(); // 遷移先の画面widgetを指定
                   },
                 ),
               );
