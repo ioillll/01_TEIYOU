@@ -1,6 +1,6 @@
 {
-    "name": "helloworld",
-    "short_name": "helloworld",
+    "name": "tutorial_1",
+    "short_name": "tutorial_1",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
