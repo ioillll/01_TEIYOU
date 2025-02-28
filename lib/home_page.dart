@@ -82,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
              child: Text((weatherData != null) ? '都道府県を選択: ${weatherData!.targetArea}': '都道府県を選択'),
            ),
            ),
-           const SignOutButton(),
           ],
         ),
       ),
