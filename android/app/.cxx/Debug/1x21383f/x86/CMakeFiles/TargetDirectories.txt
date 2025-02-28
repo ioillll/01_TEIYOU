@@ -1,0 +1,2 @@
+D:/College/vacation/helloworld/android/app/.cxx/Debug/1x21383f/x86/CMakeFiles/edit_cache.dir
+D:/College/vacation/helloworld/android/app/.cxx/Debug/1x21383f/x86/CMakeFiles/rebuild_cache.dir
